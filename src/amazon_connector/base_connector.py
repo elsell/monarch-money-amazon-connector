@@ -28,6 +28,7 @@ class BaseAmazonConnector(ABC):
         self.load_cookies()
 
         if auto_login:
+            logger.info(f"Beginnings auto-login for user {username}.s")
             self.login(email=username, password=password)
         else:
             input("Please sign in, then press Enter to continue...")
