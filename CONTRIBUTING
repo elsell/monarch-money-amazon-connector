@@ -1,0 +1,15 @@
+# Contributing
+
+### Configure Development Environment
+
+### Install Development Dependencies
+
+```bash
+python -m pip install ".[dev]"
+```
+
+### Install pre-commit Hooks
+
+```bash
+pre-commit install
+```
