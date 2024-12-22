@@ -42,6 +42,10 @@ class BaseAmazonConnector(ABC):
         return self._config_directory / "firefox-profile" / "default"
 
     @property
+    def url_orders(self) -> str:
+        return f"{self._AMAZON_URL}/your-orders/orders"
+
+    @property
     def _cookies_file(self) -> Path:
         return self._config_directory / "cookies.pkl"
 
