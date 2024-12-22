@@ -1,0 +1,58 @@
+default_install_hook_types:
+  - pre-commit
+  - commit-msg
+
+repos:
+    - repo: https://github.com/pre-commit/pre-commit-hooks
+      rev: v4.1.0
+      hooks:
+          - id: check-added-large-files
+          - id: check-ast
+          - id: check-byte-order-marker
+          - id: check-case-conflict
+          - id: check-merge-conflict
+          - id: check-symlinks
+          - id: check-yaml
+            args: ["--unsafe"]
+          - id: destroyed-symlinks
+          - id: detect-private-key
+          - id: end-of-file-fixer
+          - id: requirements-txt-fixer
+          - id: trailing-whitespace
+          - id: fix-byte-order-marker
+            exclude: docs/CNAME
+          - id: fix-encoding-pragma
+            args: [--remove]
+          - id: mixed-line-ending
+            args: [--fix=lf]
+    - repo: https://github.com/codespell-project/codespell
+      rev: v2.1.0
+      hooks:
+          - id: codespell
+            exclude: >
+                (?x)^(
+                    .*\.json|.spellcheck_ignore.txt
+                )$
+            args:
+                [
+                    --check-filenames,
+                    --check-hidden,
+                    --ignore-words=.spellcheck_ignore.txt,
+                    -x=.codespellignorelines,
+                ]
+    - repo: https://github.com/astral-sh/ruff-pre-commit
+      # Ruff version.
+      rev: v0.1.9
+      hooks:
+          # Run the linter.
+          - id: ruff
+            args: [--fix]
+          # Run the formatter.
+          - id: ruff-format
+
+    - repo: https://github.com/compilerla/conventional-pre-commit
+      rev: 4.0.0
+      hooks:
+        - id: conventional-pre-commit
+          stages: [commit-msg]
+          args: []
