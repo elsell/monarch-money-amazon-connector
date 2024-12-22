@@ -1,0 +1,40 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/"]
+
+[project]
+name = "monarch-money-amazon-connector"
+version = "0.0.1"
+authors = [
+  { name="elsell", email="35787503+elsell@users.noreply.github.com" },
+]
+description = "A simple package to automate the annotation of Amazon order transactions within Monarch Money with the purchased items."
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Framework :: Hatch"
+]
+dependencies = [
+    "pydantic==2.9.2",
+    "selenium==4.25.0",
+    "monarchmoney",
+    "loguru",
+    "openai"
+]
+
+[project.optional-dependencies]
+build = ["twine"]
+
+
+
+[project.urls]
+Homepage = "https://github.com/elsell/monarch-money-amazon-connector"
+Issues = "https://github.com/elsell/monarch-money-amazon-connector/issues"
