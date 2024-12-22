@@ -2,19 +2,22 @@ import time
 from selenium.webdriver.common.by import By
 
 from selenium.common.exceptions import NoSuchElementException
-from amazon_connector.types import AmazonOrderItem, AmazonOrderData
-from amazon_connector.base_connector import BaseAmazonConnector
+from .types import AmazonOrderItem, AmazonOrderData
+from .base_connector import BaseAmazonConnector
+from loguru import logger
 
 
 class AmazonOrderConnector(BaseAmazonConnector):
-    def scrape_all_pages(self, base_url: str) -> AmazonOrderData:
+    _ORDERS_PER_PAGE = 10
+
+    def scrape_all_pages(self) -> AmazonOrderData:
         count_orders_on_page = None
         page = 0
 
         all_orders = AmazonOrderData(orders=[])
 
         while count_orders_on_page is None or count_orders_on_page > 0:
-            page_url = base_url + f"?&startIndex={page * 10}"
+            page_url = self.url_orders + f"?&startIndex={page * self._ORDERS_PER_PAGE}"
 
             orders_on_page = self.scrape_order_info(url=page_url)
 
@@ -26,7 +29,7 @@ class AmazonOrderConnector(BaseAmazonConnector):
 
         return all_orders
 
-    def scrape_order_info(self, url) -> AmazonOrderData:
+    def scrape_order_info(self, url: str) -> AmazonOrderData:
         self.driver.get(url)
 
         time.sleep(3)  # Wait for the page to load
@@ -58,7 +61,7 @@ class AmazonOrderConnector(BaseAmazonConnector):
                 orders.orders.append(order_info)
 
         except NoSuchElementException as e:
-            print(f"An error occurred: {e}")
+            logger.error(f"An error occurred: {e}")
 
         return orders
 
@@ -81,7 +84,7 @@ if __name__ == "__main__":
 
     try:
         print("Scraping order info...")
-        order_info = scraper.scrape_all_pages(URL)
+        order_info = scraper.scrape_all_pages()
         print("Scraped Order Info:")
         print(order_info)
         order_info.to_csv("transaction.csv")
