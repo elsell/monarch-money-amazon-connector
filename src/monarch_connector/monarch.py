@@ -1,18 +1,16 @@
 import time
 from monarchmoney import MonarchMoney
-import asyncio
-from api_types import (
+from .api_types import (
     CategoriesResponse,
     CategoryDetails,
     TransactionResponse,
     Transaction,
 )
-from csv import DictReader
-from connector_types import AmazonOrder, TransactionAmazonMapping
+from .connector_types import AmazonOrder, TransactionAmazonMapping
 from loguru import logger
-from ast import literal_eval
 
-from llm import LLMTool
+from .llm import LLMTool
+from ..amazon_connector.types import AmazonOrderData
 
 
 class MonarchConnector:
@@ -34,7 +32,7 @@ class MonarchConnector:
         return transactions_needing_review
 
     async def match_transactions_to_amazon(
-        self, transaction_csv_file: str
+        self, amazon_orders: AmazonOrderData
     ) -> list[TransactionAmazonMapping]:
         """Match the transactions that need review to the Amazon orders.
 
@@ -45,17 +43,11 @@ class MonarchConnector:
         """
         transactions = await self.get_transactions_need_review()
 
+        validated_orders = [AmazonOrder.model_validate(o) for o in amazon_orders.orders]
+
         logger.info(f"Found {len(transactions)} transactions needing review.")
 
-        amazon_orders: list[AmazonOrder] = []
-
-        with open(transaction_csv_file, "r") as fp:
-            reader = DictReader(fp)
-            for row in reader:
-                row["items"] = literal_eval(row["items"])
-                amazon_orders.append(AmazonOrder.model_validate(row))
-
-        logger.info(f"Found {len(amazon_orders)} Amazon orders.")
+        logger.info(f"Found {len(validated_orders)} Amazon orders.")
 
         matches: dict[str, TransactionAmazonMapping] = {}
 
@@ -67,7 +59,7 @@ class MonarchConnector:
             else:
                 transaction.amount = abs(transaction.amount)
 
-            for order in amazon_orders:
+            for order in validated_orders:
                 if transaction.amount == float(order.total_cost.replace("$", "")):
                     if transaction.id not in matches:
                         matches[transaction.id] = TransactionAmazonMapping(
@@ -129,21 +121,3 @@ class MonarchConnector:
         )
 
         return next(c for c in categories if c.name == response)
-
-
-async def run():
-    mm = MonarchMoney()
-    try:
-        mm.load_session()
-    except FileNotFoundError:
-        await mm.interactive_login()
-
-    m = MonarchConnector(monarch_money=mm)
-
-    matches = await m.match_transactions_to_amazon("../test_john.csv")
-
-    await m.add_notes_to_amazon_orders(matches)
-
-
-if __name__ == "__main__":
-    asyncio.run(run())
