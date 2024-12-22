@@ -109,7 +109,7 @@ async def run():
     mm = MonarchMoney()
     try:
         mm.load_session()
-    except:
+    except FileNotFoundError:
         await mm.interactive_login()
 
     m = MonarchConnector(monarch_money=mm)
