@@ -29,13 +29,14 @@ dependencies = [
   "openai"
 ]
 
-  [[project.authors]]
-  name = "elsell"
-  email = "35787503+elsell@users.noreply.github.com"
+[project.optional-dependencies]
+build = ["twine"]
+dev = ["pre-commit", "ruff"]
 
-  [project.optional-dependencies]
-  build = [ "twine" ]
+[[project.authors]]
+name = "elsell"
+email = "35787503+elsell@users.noreply.github.com"
 
-  [project.urls]
-  Homepage = "https://github.com/elsell/monarch-money-amazon-connector"
-  Issues = "https://github.com/elsell/monarch-money-amazon-connector/issues"
+[project.urls]
+Homepage = "https://github.com/elsell/monarch-money-amazon-connector"
+Issues = "https://github.com/elsell/monarch-money-amazon-connector/issues"

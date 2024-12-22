@@ -15,7 +15,7 @@ class AmazonOrderData(BaseModel):
 
     def to_csv(self, filename: str):
         fieldnames = list(AmazonOrderItem.model_json_schema()["properties"].keys())
-        
+
         with open(filename, "w") as fp:
             writer = csv.DictWriter(fp, fieldnames=fieldnames)
             writer.writeheader()
