@@ -20,6 +20,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import argparse
 import toml
 from .config.types import Config
+from .cli import MonarchMoneyAmazonConnectorCLI
+from asyncio import run
 
 
 def parse_args():
@@ -38,17 +40,24 @@ def parse_toml(toml_path: str) -> Config:
     Parse the toml file at the given path and return the dictionary.
     """
     with open(toml_path, "r") as f:
+        print(toml.load(f))
+        f.seek(0)
         return Config.model_validate(toml.load(f))
+
+
+def get_config(args: argparse.Namespace) -> Config:
+    toml_config = parse_toml(args.config)
+    return toml_config
 
 
 def main():
     args = parse_args()
 
-    print(args)
+    config = get_config(args)
 
-    config = parse_toml(args.config)
+    cli = MonarchMoneyAmazonConnectorCLI(config=config)
 
-    print(config)
+    run(cli.annotate_transactions())
 
 
 if __name__ == "__main__":
