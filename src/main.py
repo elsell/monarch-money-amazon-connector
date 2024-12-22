@@ -16,3 +16,40 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
+
+import argparse
+import toml
+from .config.types import Config
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="Monarch Money Amazon Connector")
+    parser.add_argument(
+        "--config",
+        type=str,
+        default="mmac.toml",
+        help="Path to the configuration file",
+    )
+    return parser.parse_args()
+
+
+def parse_toml(toml_path: str) -> Config:
+    """
+    Parse the toml file at the given path and return the dictionary.
+    """
+    with open(toml_path, "r") as f:
+        return Config.model_validate(toml.load(f))
+
+
+def main():
+    args = parse_args()
+
+    print(args)
+
+    config = parse_toml(args.config)
+
+    print(config)
+
+
+if __name__ == "__main__":
+    main()
