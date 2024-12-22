@@ -8,3 +8,4 @@ build/
 dist/
 *.key
 __pycache__/
+.mmac
