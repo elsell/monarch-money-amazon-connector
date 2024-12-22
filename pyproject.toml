@@ -32,7 +32,7 @@ dependencies = [
 
 [project.optional-dependencies]
 build = ["twine"]
-dev = ["pre-commit", "black", "ruff"]
+dev = ["pre-commit", "ruff"]
 
 
 
