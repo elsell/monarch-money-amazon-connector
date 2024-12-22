@@ -12,10 +12,22 @@ class AmazonAccount(BaseModel):
     password: str
 
 
+class MonarchAccount(BaseModel):
+    email: str
+    password: str
+
+
 class Config(BaseSettings):
+    monarch_account: MonarchAccount
     amazon_accounts: list[AmazonAccount]
 
-    model_config = SettingsConfigDict(env_prefix="mmac_", case_sensitive=False)
+    # Prefix environment variables with MMAC_, and set them to be case insensitive.
+    model_config = SettingsConfigDict(
+        env_prefix="mmac_",
+        case_sensitive=False,
+        extra="ignore",
+        env_nested_delimiter="__",
+    )
 
     @classmethod
     def settings_customise_sources(
