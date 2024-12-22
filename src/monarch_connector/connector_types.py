@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from api_types import Transaction
+from .api_types import Transaction
 
 
 class AmazonOrder(BaseModel):
