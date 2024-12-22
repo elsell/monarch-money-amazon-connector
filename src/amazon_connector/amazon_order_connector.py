@@ -1,71 +1,12 @@
-import pickle
 import time
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.firefox.service import Service
-from selenium.webdriver.firefox.options import Options
-from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
 
 from selenium.common.exceptions import NoSuchElementException
 from amazon_connector.types import AmazonOrderItem, AmazonOrderData
+from amazon_connector.base_connector import BaseAmazonConnector
 
 
-class AmazonConnector:
-    def __init__(self, username: str, password: str):
-        self._username = username
-        self._password = password
-
-        self.driver = self.initialize_driver()
-
-        self.driver.get("https://www.amazon.com")
-
-        input("Please log in, then press Enter to continue...")
-
-        self.load_cookies()
-
-    def initialize_driver(self):
-        options = Options()
-        profile = FirefoxProfile(
-            profile_directory="/home/john/snap/firefox/common/.mozilla/firefox/7oju93b7.default-release"
-        )
-        options.profile = profile
-
-        service = Service("/snap/bin/firefox.geckodriver")
-        driver = webdriver.Firefox(service=service, options=options)
-        return driver
-
-    def load_cookies(self):
-        try:
-            cookies = pickle.load(open("cookies.pkl", "rb"))
-            for cookie in cookies:
-                self.driver.add_cookie(cookie)
-        except FileNotFoundError:
-            pass
-
-    def login(self, email, password):
-        # We're already on the login page
-        try:
-            email_input = self.driver.find_element(By.ID, "ap_email")
-            email_input.send_keys(email)
-            continue_button = self.driver.find_element(By.ID, "continue")
-            continue_button.click()
-            time.sleep(6)  # Wait for the page to load
-        except NoSuchElementException:
-            pass
-
-        try:
-            password_input = self.driver.find_element(By.ID, "ap_password")
-            password_input.send_keys(password)
-
-            sign_in_button = self.driver.find_element(By.ID, "signInSubmit")
-            sign_in_button.click()
-
-            pickle.dump(self.driver.get_cookies(), open("cookies.pkl", "wb"))
-
-            time.sleep(3)  # Wait for the page to load
-        except NoSuchElementException:
-            pass
-
+class AmazonOrderConnector(BaseAmazonConnector):
     def scrape_all_pages(self, base_url: str) -> AmazonOrderData:
         count_orders_on_page = None
         page = 0
@@ -131,8 +72,12 @@ if __name__ == "__main__":
     URL = "https://www.amazon.com/your-orders/orders"
 
     print("Starting scraper...")
+    import os
 
-    scraper = AmazonConnector(username="", password="")
+    scraper = AmazonOrderConnector(
+        username="example@example.com",
+        password=os.environ.get("AMAZON_PASSWORD", ""),
+    )
 
     try:
         print("Scraping order info...")
