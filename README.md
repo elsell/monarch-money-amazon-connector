@@ -2,7 +2,7 @@
 
 Monarch Money Amazon Connector automatically adds
 a note to each Amazon transaction in Monarch Money containing
-the list of items ordered. 
+the list of items ordered.
 
 Why?
 
