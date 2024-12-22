@@ -19,6 +19,7 @@ jobs:
         with:
           preset: "conventionalcommits"
           version-file: "pyproject.toml"
+          version-path: "project.version"
           github-token: ${{ secrets.github_token }}
 
       - name: Create Release
