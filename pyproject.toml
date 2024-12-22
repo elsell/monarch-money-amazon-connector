@@ -30,6 +30,7 @@ dependencies = [
   "loguru",
   "openai",
   "toml",
+  "webdriver_manager",
 ]
 
 [project.optional-dependencies]
