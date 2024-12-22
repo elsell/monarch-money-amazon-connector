@@ -1,4 +1,3 @@
-
 import pickle
 import time
 from selenium import webdriver
@@ -12,12 +11,11 @@ from amazon_connector.types import AmazonOrderItem, AmazonOrderData
 
 
 class AmazonConnector:
-    def __init__(self, username: str, password:str):
+    def __init__(self, username: str, password: str):
         self._username = username
         self._password = password
-        
-        self.driver = self.initialize_driver()
 
+        self.driver = self.initialize_driver()
 
         self.driver.get("https://www.amazon.com")
 
@@ -27,13 +25,15 @@ class AmazonConnector:
 
     def initialize_driver(self):
         options = Options()
-        profile = FirefoxProfile(profile_directory='/home/john/snap/firefox/common/.mozilla/firefox/7oju93b7.default-release')
+        profile = FirefoxProfile(
+            profile_directory="/home/john/snap/firefox/common/.mozilla/firefox/7oju93b7.default-release"
+        )
         options.profile = profile
 
-        service = Service('/snap/bin/firefox.geckodriver')
+        service = Service("/snap/bin/firefox.geckodriver")
         driver = webdriver.Firefox(service=service, options=options)
         return driver
-    
+
     def load_cookies(self):
         try:
             cookies = pickle.load(open("cookies.pkl", "rb"))
@@ -41,7 +41,7 @@ class AmazonConnector:
                 self.driver.add_cookie(cookie)
         except FileNotFoundError:
             pass
-    
+
     def login(self, email, password):
         # We're already on the login page
         try:
@@ -66,9 +66,7 @@ class AmazonConnector:
         except NoSuchElementException:
             pass
 
-
     def scrape_all_pages(self, base_url: str) -> AmazonOrderData:
-
         count_orders_on_page = None
         page = 0
 
@@ -87,7 +85,6 @@ class AmazonConnector:
 
         return all_orders
 
-                                               
     def scrape_order_info(self, url) -> AmazonOrderData:
         self.driver.get(url)
 
@@ -97,45 +94,46 @@ class AmazonConnector:
         if "signin" in self.driver.current_url:
             self.login(self._username, self._password)
 
+        orders = AmazonOrderData(orders=[])
 
-        orders = AmazonOrderData(orders = [])
-        
         try:
             all_cards = self.driver.find_elements(By.CSS_SELECTOR, ".order-card")
             for order_card in all_cards:
                 order_info: AmazonOrderItem = AmazonOrderItem()
 
-                order_date = order_card.find_elements(By.CSS_SELECTOR, ".a-size-base")[0].text
-                total_cost = order_card.find_elements(By.CSS_SELECTOR, ".a-size-base")[1].text
-                items = order_card.find_elements(By.CSS_SELECTOR, ".yohtmlc-product-title")
+                order_date = order_card.find_elements(By.CSS_SELECTOR, ".a-size-base")[
+                    0
+                ].text
+                total_cost = order_card.find_elements(By.CSS_SELECTOR, ".a-size-base")[
+                    1
+                ].text
+                items = order_card.find_elements(
+                    By.CSS_SELECTOR, ".yohtmlc-product-title"
+                )
                 order_info.order_date = order_date
                 order_info.total_cost = total_cost
                 order_info.items = [item.text for item in items]
 
                 orders.orders.append(order_info)
-            
+
         except NoSuchElementException as e:
             print(f"An error occurred: {e}")
-
 
         return orders
 
     def close_driver(self):
         self.driver.quit()
 
-if __name__ == "__main__":
 
+if __name__ == "__main__":
     # TODO: This only will show 3 months of order history. It would
     # be good to give users a way to specify a time filter.
     URL = "https://www.amazon.com/your-orders/orders"
 
     print("Starting scraper...")
 
-    scraper = AmazonConnector(
-        username="",
-        password=""
-    )
-    
+    scraper = AmazonConnector(username="", password="")
+
     try:
         print("Scraping order info...")
         order_info = scraper.scrape_all_pages(URL)

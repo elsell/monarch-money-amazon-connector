@@ -1,6 +1,7 @@
 import openai
 import os
 
+
 class LLMTool:
     def __init__(self):
         self._llm = openai.OpenAI(
@@ -11,15 +12,9 @@ class LLMTool:
         response = self._llm.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
-                {
-                    "role": "system",
-                    "content": system_prompt
-                },
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ]
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": prompt},
+            ],
         )
 
         return response.choices[0].message.content

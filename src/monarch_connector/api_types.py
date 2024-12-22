@@ -1,6 +1,7 @@
 from typing import Literal, Optional
 from pydantic import BaseModel
 
+
 class Merchant(BaseModel):
     name: str
     id: str
@@ -12,6 +13,7 @@ class Merchant(BaseModel):
     def __repr__(self):
         return f"Merchant: {self.name}"
 
+
 class Account(BaseModel):
     id: str
     displayName: str
@@ -21,6 +23,7 @@ class Account(BaseModel):
 
     def __repr__(self):
         return f"Account: {self.displayName}"
+
 
 class Category(BaseModel):
     id: str
@@ -32,6 +35,7 @@ class Category(BaseModel):
     def __repr__(self):
         return f"Category: {self.name}"
 
+
 class Transaction(BaseModel):
     id: str
     amount: float
@@ -41,7 +45,7 @@ class Transaction(BaseModel):
     plaidName: str
     notes: Optional[str] = None
     isRecurring: bool
-    reviewStatus: Optional[Literal['needs_review'] | Literal['reviewed']] = None
+    reviewStatus: Optional[Literal["needs_review"] | Literal["reviewed"]] = None
     needsReview: bool
     attachments: list
     isSplitTransaction: bool
@@ -68,6 +72,7 @@ class AllTransactions(BaseModel):
     def __repr__(self):
         return f"Transactions: {self.results}"
 
+
 class TransactionResponse(BaseModel):
     allTransactions: AllTransactions
 
@@ -75,7 +80,7 @@ class TransactionResponse(BaseModel):
 class CategoryGroup(BaseModel):
     id: str
     name: str
-    type: Literal['income'] | Literal['expense'] | Literal['transfer']
+    type: Literal["income"] | Literal["expense"] | Literal["transfer"]
 
 
 class CategoryDetails(BaseModel):
@@ -89,9 +94,10 @@ class CategoryDetails(BaseModel):
     createdAt: str
     group: CategoryGroup
 
+
 class CategoriesResponse(BaseModel):
     categories: list[CategoryDetails]
-    
+
     def __str__(self):
         return f"Categories: {self.categories}"
 
