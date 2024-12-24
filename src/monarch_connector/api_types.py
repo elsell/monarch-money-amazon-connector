@@ -54,7 +54,7 @@ class Transaction(BaseModel):
     category: Category
     merchant: Merchant
     account: dict
-    tags: list
+    tags: list["TransactionTag"]
 
     def __str__(self):
         return f"Transaction: {self.plaidName} for {self.amount} on {self.date}"
@@ -103,3 +103,28 @@ class CategoriesResponse(BaseModel):
 
     def __repr__(self):
         return f"Categories: {self.categories}"
+
+
+class TransactionTag(BaseModel):
+    id: str
+    name: str
+    color: str
+    order: int
+    transactionCount: Optional[int] = None
+
+
+class TransactionTagResponse(BaseModel):
+    householdTransactionTags: list[TransactionTag]
+
+
+class MonarchError(BaseModel):
+    message: str
+
+
+class CreatedTransactionTag(BaseModel):
+    tag: Optional[TransactionTag] = None
+    errors: Optional[MonarchError] = None
+
+
+class CreateTransactionTagResponse(BaseModel):
+    createTransactionTag: CreatedTransactionTag
