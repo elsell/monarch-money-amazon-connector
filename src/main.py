@@ -65,7 +65,11 @@ def main():
 
     cli = MonarchMoneyAmazonConnectorCLI(config=config)
 
-    run(cli.annotate_transactions())
+    try:
+        run(cli.annotate_transactions())
+    except KeyboardInterrupt:
+        logger.info("Aborting.")
+        return
 
 
 if __name__ == "__main__":
