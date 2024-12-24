@@ -1,33 +1,45 @@
 import time
 from monarchmoney import MonarchMoney
+
+from .exceptions import TagAlreadyExistsException
+
+from ..config.types import Config
 from .api_types import (
     CategoriesResponse,
     CategoryDetails,
+    CreateTransactionTagResponse,
     TransactionResponse,
     Transaction,
+    TransactionTag,
+    TransactionTagResponse,
 )
 from .connector_types import AmazonOrder, TransactionAmazonMapping
 from loguru import logger
 
-from .llm import LLMTool
 from ..amazon_connector.types import AmazonOrderData
 
 
 class MonarchConnector:
-    def __init__(self, monarch_money: MonarchMoney):
+    def __init__(self, monarch_money: MonarchMoney, config: Config):
         self.mm = monarch_money
-        self._llm = LLMTool()
+
+        self._config = config
 
     async def get_transactions(self) -> TransactionResponse:
-        transactions = await self.mm.get_transactions()
+        transactions = await self.mm.get_transactions(limit=1000)
         return TransactionResponse.model_validate(transactions)
 
     async def get_transactions_need_review(self) -> list[Transaction]:
+        """Gets the transactions that need review, filtering out those that have the MMAC tag."""
+
+        mmac_tag = await self._get_mmac_tag_id()
+
         transactions = await self.get_transactions()
         transactions_needing_review = [
             t
             for t in transactions.allTransactions.results
             if t.reviewStatus == "needs_review"
+            and (mmac_tag not in [tag.name for tag in t.tags])
         ]
         return transactions_needing_review
 
@@ -43,7 +55,12 @@ class MonarchConnector:
         """
         transactions = await self.get_transactions_need_review()
 
-        validated_orders = [AmazonOrder.model_validate(o) for o in amazon_orders.orders]
+        validated_orders = [
+            AmazonOrder.model_validate(o.model_dump()) for o in amazon_orders.orders
+        ]
+
+        for order in validated_orders:
+            order.account_email = amazon_orders.account_email
 
         logger.info(f"Found {len(transactions)} transactions needing review.")
 
@@ -83,16 +100,125 @@ class MonarchConnector:
 
         return list(matches.values())
 
+    async def _get_transaction_tags(self) -> list[TransactionTag]:
+        all_tags = TransactionTagResponse.model_validate(
+            await self.mm.get_transaction_tags()
+        )
+
+        logger.debug(f"Found {len(all_tags.householdTransactionTags)} tags.")
+
+        return all_tags.householdTransactionTags
+
+    async def _create_transaction_tag(
+        self, tag_name: str, tag_color: str
+    ) -> TransactionTag:
+        """Create a tag in Monarch Money.
+
+        Args:
+            tag_name (str): The name of the tag.
+            tag_color (str): The color of the tag.
+
+        Returns:
+            TransactionTag: The created tag.
+
+        Raises:
+            TagAlreadyExistsException: If the tag already exists.
+        """
+        logger.info(f"Creating tag '{tag_name}' in Monarch Money.")
+
+        tag = CreateTransactionTagResponse.model_validate(
+            await self.mm.create_transaction_tag(name=tag_name, color=tag_color)
+        )
+
+        if tag.createTransactionTag.tag is None and tag.createTransactionTag.errors:
+            logger.trace(
+                f"Failed to create tag: {tag.createTransactionTag.errors.message}"
+            )
+            raise TagAlreadyExistsException(
+                f"Error creating tag '{tag_name}'. It already exists."
+            )
+        elif tag.createTransactionTag.tag is None:
+            logger.error(
+                f"Failed to create tag {tag_name}. Unexpected missing tag data."
+            )
+            raise Exception("Failed to create tag.")
+
+        return tag.createTransactionTag.tag
+
+    async def _get_tag(self, name: str, color: str) -> str:
+        """Gets a MonarchMoney tag, creating it if it doesn't already exist.
+
+        Returns:
+            str: The tag ID.
+        """
+        all_tags = await self._get_transaction_tags()
+
+        tag_names = set(list(t.name for t in all_tags))
+
+        # Tag doesn't exist
+        if name not in tag_names:
+            logger.info(f"Creating tag '{name}' in Monarch Money.")
+
+            tag = await self._create_transaction_tag(
+                tag_name=name,
+                tag_color=color,
+            )
+
+        # Tag Does Exist
+        else:
+            tag = next(t for t in all_tags if t.name == name)
+
+        return tag.id
+
+    async def _get_mmac_tag_id(self) -> str:
+        """Gets the MMAC tag, creating it if it doesn't already exist.
+
+        Returns:
+            str: The tag ID.
+        """
+        return await self._get_tag(
+            name=self._config.transaction_tag.name,
+            color=self._config.transaction_tag.color,
+        )
+
     async def add_notes_to_amazon_orders(self, matches: list[TransactionAmazonMapping]):
+        """
+        This method also adds a tag to the Monarch Transaction, which is used
+        to prevent overwriting the note on subsequent runs. This tag can be configured
+        using the config file or environment variables.
+        """
+        tag_id = await self._get_mmac_tag_id()
+
         for match in matches:
             for order in match.amazon_orders:
                 item_list = [f"\t- {item}" for item in order.items]
                 logger.info(
                     f"Adding note to transaction {match.transaction.id} for Amazon order: {order.order_date}"
                 )
+
+                # Add Note
                 await self.mm.update_transaction(
                     transaction_id=match.transaction.id,
-                    notes=f"Date: {order.order_date}\nCost: {order.total_cost}\nItems:\n{'\n'.join(item_list)}",
+                    notes=f"Date: {order.order_date}\nAccount: {order.account_email}\nItems:\n{'\n'.join(item_list)}",
+                )
+
+                # Add Tag
+                previous_tag_ids = [t.id for t in match.transaction.tags]
+                previous_tag_ids.append(tag_id)
+                new_tags = list(set(previous_tag_ids))
+
+                if self._config.amazon_account_tag.enabled and order.account_email:
+                    tag_name = (
+                        f"{self._config.amazon_account_tag.prefix}{order.account_email}"
+                    )
+                    account_tag = await self._get_tag(
+                        name=tag_name,
+                        color=self._config.amazon_account_tag.color,
+                    )
+                    new_tags.append(account_tag)
+
+                await self.mm.set_transaction_tags(
+                    transaction_id=match.transaction.id, tag_ids=new_tags
                 )
                 time.sleep(1)
 
@@ -101,23 +227,3 @@ class MonarchConnector:
         response = CategoriesResponse.model_validate(categories)
 
         return [c for c in response.categories if c.isDisabled is False]
-
-    async def guess_category(
-        self, transaction: TransactionAmazonMapping
-    ) -> CategoryDetails:
-        """Use the LLM to guess the category of a transaction."""
-        categories = await self.get_enabled_categories()
-
-        # Provide the available categories as part of the system prompt
-        item_list = [f"\t- {item}" for item in transaction.amazon_orders]
-        system_prompt = (
-            f"Valid available categories: {', '.join([c.name for c in categories])}"
-        )
-        prompt = f"Guess the category for transaction, only providing one of the valid available categories:\nMerchant: {transaction.transaction.plaidName}\nItems:\n{item_list}"
-
-        print(system_prompt)
-        response = self._llm.get_llm_response(
-            system_prompt=system_prompt, prompt=prompt
-        )
-
-        return next(c for c in categories if c.name == response)
