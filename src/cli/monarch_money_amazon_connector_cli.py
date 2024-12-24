@@ -3,20 +3,36 @@ from loguru import logger
 from ..amazon_connector.amazon_order_connector import AmazonOrderConnector
 from ..monarch_connector.monarch import MonarchConnector
 from monarchmoney import MonarchMoney
+from ..captcha_solver.llm_captcha_solver import LLMCaptchaSolver
 
 
 class MonarchMoneyAmazonConnectorCLI:
     def __init__(self, config: Config):
-        self.config = config
+        self._config = config
+
+        self._captcha_solver = None
+        if self._config.llm.enable_llm_captcha_solver:
+            self._captcha_solver = LLMCaptchaSolver(
+                openai_api_key=self._config.llm.api_key,
+                model_name=self._config.llm.llm_model_name,
+                base_url=self._config.llm.base_url,
+                project=self._config.llm.project,
+                organization=self._config.llm.organization,
+            )
 
     async def _get_monarch_money(self) -> MonarchMoney:
         self._mm = MonarchMoney()
         try:
             self._mm.load_session()
+            logger.info("Monarch Money session found. Using existing session.")
         except FileNotFoundError:
+            logger.info("No Monarch Money session found. Logging in.")
+            logger.debug(
+                f"Logging in with email: {self._config.monarch_account.email}, password: '{self._config.monarch_account.password}'"
+            )
             await self._mm.login(
-                email=self.config.monarch_account.email,
-                password=self.config.monarch_account.password,
+                email=self._config.monarch_account.email,
+                password=self._config.monarch_account.password,
             )
 
         return self._mm
@@ -27,10 +43,14 @@ class MonarchMoneyAmazonConnectorCLI:
         logger.info(f"Annotating transactions found in Amazon Account: {account.email}")
 
         connector = AmazonOrderConnector(
-            username=account.email, password=account.password
+            username=account.email,
+            password=account.password,
+            pause_between_navigation=self._config.debug.pause_between_navigation,
+            captcha_solver=self._captcha_solver,
         )
 
-        orders = connector.scrape_all_pages()
+        logger.info("Retrieving Amazon orders.")
+        orders = connector.get_all_orders()
 
         logger.debug(
             f"Found {len(orders.orders)} orders for Amazon account: {account.email}"
@@ -50,14 +70,14 @@ class MonarchMoneyAmazonConnectorCLI:
 
     async def annotate_transactions(self):
         logger.info(
-            f"Annotating transactions across {len(self.config.amazon_accounts)} Amazon accounts."
+            f"Annotating transactions across {len(self._config.amazon_accounts)} Amazon accounts."
         )
 
         monarch_connector = MonarchConnector(
-            monarch_money=await self._get_monarch_money()
+            monarch_money=await self._get_monarch_money(), config=self._config
         )
 
-        for account in self.config.amazon_accounts:
+        for account in self._config.amazon_accounts:
             await self._annotate_single_account(
                 account=account, monarch_connector=monarch_connector
             )
