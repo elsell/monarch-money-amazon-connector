@@ -4,7 +4,7 @@ from pydantic_settings import (
     SettingsConfigDict,
     PydanticBaseSettingsSource,
 )
-from typing import Type
+from typing import Optional, Type
 
 
 class AmazonAccount(BaseModel):
@@ -17,9 +17,37 @@ class MonarchAccount(BaseModel):
     password: str
 
 
+class TransactionTag(BaseModel):
+    name: str = "MMAC"
+    color: str = "#0390fc"
+
+
+class AmazonAccountTag(BaseModel):
+    enabled: bool = True
+    color: str = "#ff9900"
+    prefix: str = "AMZ Account: "
+
+
+class Debug(BaseModel):
+    pause_between_navigation: bool = False
+
+
+class LLM(BaseModel):
+    enable_llm_captcha_solver: bool = False
+    api_key: str = ""
+    llm_model_name: str = "gpt-4o"
+    base_url: Optional[str] = None
+    project: Optional[str] = None
+    organization: Optional[str] = None
+
+
 class Config(BaseSettings):
     monarch_account: MonarchAccount
     amazon_accounts: list[AmazonAccount]
+    transaction_tag: TransactionTag = TransactionTag()
+    amazon_account_tag: AmazonAccountTag = AmazonAccountTag()
+    debug: Debug = Debug()
+    llm: LLM = LLM()
 
     # Prefix environment variables with MMAC_, and set them to be case insensitive.
     model_config = SettingsConfigDict(
