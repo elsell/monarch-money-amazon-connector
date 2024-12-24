@@ -12,4 +12,11 @@
     "ruff.organizeImports": true,
     "ruff.fixAll": true,
     "editor.formatOnSave": true,
+    "cSpell.words": [
+        "mmac",
+        "monarchmoney",
+        "otpcode",
+        "TOTP",
+        "yohtmlc"
+    ],
 }
