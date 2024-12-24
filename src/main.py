@@ -22,6 +22,14 @@ import toml
 from .config.types import Config
 from .cli import MonarchMoneyAmazonConnectorCLI
 from asyncio import run
+from loguru import logger
+import sys
+
+logger.remove()
+logger.add(
+    sink=sys.stdout,
+    format="<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | <level>{level: <8}</level> | <level>{message}</level>",
+)
 
 
 def parse_args():
