@@ -1,4 +1,15 @@
-## 0.2.0 (2024-12-25)
+## [1.0.0](https://github.com/elsell/monarch-money-amazon-connector/compare/v0.2.0...v1.0.0) (2024-12-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* Requires python-statemachine package.
+
+### Features
+
+* Use FSM to handle order scraping. ([#2](https://github.com/elsell/monarch-money-amazon-connector/issues/2)) ([6c40253](https://github.com/elsell/monarch-money-amazon-connector/commit/6c40253ec8a6a6e8e07ae1dbfc4b7cc652e574fb))
+
+## [0.2.0](https://github.com/elsell/monarch-money-amazon-connector/compare/4010d1f447f515396109e848a1afb3adbe9b629b...v0.2.0) (2024-12-25)
 
 
 ### Features
