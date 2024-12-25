@@ -78,3 +78,36 @@ api_key = "sk-********"
 ```bash
 mmac
 ```
+
+## A Note About SemVer
+
+MMAC is committed to using [Semantic Versioning](https://semver.org/) for its codebase.
+This means we are going to reach v1.0.0 very quickly, as strictly adhering to SemVer requires
+a major version increment for every breaking change.
+
+There is a lot of discussion about whether, for this reason, SemVer is "bad". In my opinion,
+SemVer *is* bad, but only for user-facing application versions.
+
+Why?
+
+Technical breaking changes (changes that break backwards compatibility in the codebase, but do not
+change the user experience/release a feature) are essential to track for the developer. However,
+the user of an application would be forgiven if they were confused when their app bumped from
+v1.0.0 to v2.0.0 without any notable changes.
+
+So, what's the solution?
+
+I don't know. Maintaining two versions is messy and complication, a hybrid concatenation
+of SemVer and AppVer is also messy and potentially confusing to the user, and choosing one or
+the other is an imperfect solution. Please - let me know if you've figured this out!
+
+As for MMAC, we're going to stick to SemVer. Let's face it: If you're popping open your terminal
+to `pip install` this package, you can handle reading the release notes to figure out what's new
+between v1.0.0 and v2.0.0.
+
+You're smart, I'm lazy. Let's just use SemVer.
+
+## Thanks!
+
+This project wouldn't be possible without the community [`Monarch Money Library`](https://github.com/hammem/monarchmoney)!
+Head over there and give that project some love!
