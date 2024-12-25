@@ -1,3 +1,10 @@
+## [1.2.0](https://github.com/elsell/monarch-money-amazon-connector/compare/v1.1.0...v1.2.0) (2024-12-25)
+
+
+### Features
+
+* Test pypi release ([bf7eaba](https://github.com/elsell/monarch-money-amazon-connector/commit/bf7eabad09cdbbaee0bc796cb1d6fca812ce9976))
+
 ## [1.1.0](https://github.com/elsell/monarch-money-amazon-connector/compare/v1.0.0...v1.1.0) (2024-12-25)
 
 
