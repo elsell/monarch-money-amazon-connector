@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/elsell/monarch-money-amazon-connector/compare/v1.2.0...v1.2.1) (2024-12-25)
+
+
+### Bug Fixes
+
+* Run workflow on tags too. ([6c0a586](https://github.com/elsell/monarch-money-amazon-connector/commit/6c0a586932f683e83e4ce76c1db385b4d4c13973))
+
 ## [1.2.0](https://github.com/elsell/monarch-money-amazon-connector/compare/v1.1.0...v1.2.0) (2024-12-25)
 
 
