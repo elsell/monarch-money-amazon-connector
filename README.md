@@ -23,6 +23,12 @@ Under the hood, MMAC uses the [`monarchmoney`](https://github.com/hammem/monarch
 >
 > **If you're just looking for something that works, check back in a few months :)**
 
+## Screenshot
+
+The description and the tags were automatically inserted by MMAC!
+
+![image](https://github.com/user-attachments/assets/9efbeccf-d186-4ca4-aef4-6d4915e9afc5)
+
 
 ## Quick Start
 
