@@ -14,7 +14,7 @@ Under the hood, MMAC uses the [`monarchmoney`](https://github.com/hammem/monarch
 
 > [!Warning]
 >
-> **MMAC IS IN ALPHA**
+> **⚠️ MMAC IS IN ALPHA**
 >
 > I'm making this repo public early to solicit feedback on the functionality,
 > and to provide opportunities for collaboration.
