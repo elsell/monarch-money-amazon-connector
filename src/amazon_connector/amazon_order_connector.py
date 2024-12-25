@@ -58,7 +58,7 @@ class AmazonOrderConnector(BaseAmazonConnector):
 
         # Check if we're on the login page, not the orders page
         if "signin" in self.driver.current_url:
-            self.login(self._username, self._password)
+            self._login(self._username, self._password)
             self._navigate_safe(url)
             time.sleep(3)
 
