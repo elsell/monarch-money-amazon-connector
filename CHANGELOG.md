@@ -1,4 +1,11 @@
-## [1.2.3](https://github.com/elsell/monarch-money-amazon-connector/compare/v1.2.2...v1.2.3) (2024-12-25)
+## [1.3.0](https://github.com/elsell/monarch-money-amazon-connector/compare/v1.2.3...v1.3.0) (2024-12-25)
+
+
+### Features
+
+* Create python-publish.yml ([50c4c50](https://github.com/elsell/monarch-money-amazon-connector/commit/50c4c5050c6f92f95d29b6e0f2bd341cdefb335b))
+
+## [1.2.3](https://github.com/elsell/monarch-money-amazon-connector/compare/v0.0.0...v1.2.3) (2024-12-25)
 
 
 ### Bug Fixes
@@ -18,18 +25,4 @@
 ### Bug Fixes
 
 * Run workflow on tags too. ([6c0a586](https://github.com/elsell/monarch-money-amazon-connector/commit/6c0a586932f683e83e4ce76c1db385b4d4c13973))
-
-## [1.2.0](https://github.com/elsell/monarch-money-amazon-connector/compare/v1.1.0...v1.2.0) (2024-12-25)
-
-
-### Features
-
-* Test pypi release ([bf7eaba](https://github.com/elsell/monarch-money-amazon-connector/commit/bf7eabad09cdbbaee0bc796cb1d6fca812ce9976))
-
-## [1.1.0](https://github.com/elsell/monarch-money-amazon-connector/compare/v1.0.0...v1.1.0) (2024-12-25)
-
-
-### Features
-
-* Add Headless Configuration ([#3](https://github.com/elsell/monarch-money-amazon-connector/issues/3)) ([6790480](https://github.com/elsell/monarch-money-amazon-connector/commit/6790480e6a566f0b4a08620fa8464abbca65b8c4))
 
