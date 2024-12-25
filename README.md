@@ -10,6 +10,19 @@ To make it easier to categorize Amazon transactions, eliminating
 the need to go order-by-order to find the matching transaction
 in your Amazon Account.
 
+Under the hood, MMAC uses the [`monarchmoney`](https://github.com/hammem/monarchmoney) python package.
+
+> [!Warning]
+>
+> **MMAC IS IN ALPHA**
+>
+> I'm making this repo public early to solicit feedback on the functionality,
+> and to provide opportunities for collaboration.
+>
+> No warranty is provided, and the documentation is incomplete at this point.
+>
+> **If you're just looking for something that works, check back in a few months :)**
+
 
 ## Quick Start
 
