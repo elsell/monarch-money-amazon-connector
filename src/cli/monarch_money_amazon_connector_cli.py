@@ -49,6 +49,7 @@ class MonarchMoneyAmazonConnectorCLI:
         connector = AmazonOrderConnector(
             username=account.email,
             password=account.password,
+            headless=self._config.headless,
             pause_between_navigation=self._config.debug.pause_between_navigation,
             captcha_solver=self._captcha_solver,
         )
