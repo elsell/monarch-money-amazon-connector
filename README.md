@@ -43,6 +43,21 @@ password = "password"
 # [[amazon_accounts]]
 # email = "test2@example.com"
 # password = "password"
+
+# (Optional): Use the OpenAI API to *attempt* to
+# auto solve captcha images. This is NOT very reliable,
+# but may work with simpler captchas.
+[llm]
+# Whether to use the LLM captcha solver
+enable_llm_captcha_solver = true
+# Your OpenAI API Key
+api_key = "sk-********"
+# (Optional): The OpenAI Project ID
+# project = "proj_**********"
+
+# (Optional): Specify whether to show the browser
+# window while scraping, or now (headless).
+# headless = true
 ```
 
 ### Run MMAC
