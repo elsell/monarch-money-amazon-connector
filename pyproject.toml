@@ -32,6 +32,7 @@ dependencies = [
   "toml",
   "webdriver_manager",
   "pydantic_settings",
+  "python-statemachine",
 ]
 
 [project.optional-dependencies]
