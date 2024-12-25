@@ -1,3 +1,10 @@
+## [1.1.0](https://github.com/elsell/monarch-money-amazon-connector/compare/v1.0.0...v1.1.0) (2024-12-25)
+
+
+### Features
+
+* Add Headless Configuration ([#3](https://github.com/elsell/monarch-money-amazon-connector/issues/3)) ([6790480](https://github.com/elsell/monarch-money-amazon-connector/commit/6790480e6a566f0b4a08620fa8464abbca65b8c4))
+
 ## [1.0.0](https://github.com/elsell/monarch-money-amazon-connector/compare/v0.2.0...v1.0.0) (2024-12-25)
 
 
