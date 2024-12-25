@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/elsell/monarch-money-amazon-connector/compare/v1.2.2...v1.2.3) (2024-12-25)
+
+
+### Bug Fixes
+
+* Typo ([98791c9](https://github.com/elsell/monarch-money-amazon-connector/commit/98791c927e410a5e9de8ed75a11442beb86287d5))
+
 ## [1.2.2](https://github.com/elsell/monarch-money-amazon-connector/compare/v1.2.1...v1.2.2) (2024-12-25)
 
 
@@ -25,15 +32,4 @@
 ### Features
 
 * Add Headless Configuration ([#3](https://github.com/elsell/monarch-money-amazon-connector/issues/3)) ([6790480](https://github.com/elsell/monarch-money-amazon-connector/commit/6790480e6a566f0b4a08620fa8464abbca65b8c4))
-
-## [1.0.0](https://github.com/elsell/monarch-money-amazon-connector/compare/v0.2.0...v1.0.0) (2024-12-25)
-
-
-### ⚠ BREAKING CHANGES
-
-* Requires python-statemachine package.
-
-### Features
-
-* Use FSM to handle order scraping. ([#2](https://github.com/elsell/monarch-money-amazon-connector/issues/2)) ([6c40253](https://github.com/elsell/monarch-money-amazon-connector/commit/6c40253ec8a6a6e8e07ae1dbfc4b7cc652e574fb))
 
