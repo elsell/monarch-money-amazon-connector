@@ -48,8 +48,6 @@ def parse_toml(toml_path: str) -> Config:
     Parse the toml file at the given path and return the dictionary.
     """
     with open(toml_path, "r") as f:
-        print(toml.load(f))
-        f.seek(0)
         return Config.model_validate(toml.load(f))
 
 
