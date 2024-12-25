@@ -1,7 +1,7 @@
 # Monarch Money Amazon Connector (MMAC)
 
 Monarch Money Amazon Connector automatically adds
-a note to each Amazon transaction in Monarch Money containing
+a note to each Amazon transaction in [Monarch Money](https://monarchmoney.com) containing
 the list of items ordered.
 
 Why?
