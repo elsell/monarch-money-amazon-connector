@@ -49,6 +49,8 @@ class Config(BaseSettings):
     debug: Debug = Debug()
     llm: LLM = LLM()
 
+    headless: bool = True
+
     # Prefix environment variables with MMAC_, and set them to be case insensitive.
     model_config = SettingsConfigDict(
         env_prefix="mmac_",

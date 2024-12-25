@@ -22,11 +22,14 @@ class BaseAmazonConnector(ABC):
         username: str,
         password: str,
         browser: Literal["firefox"] | Literal["chrome"] = "chrome",
+        headless: bool = True,
         pause_between_navigation: bool = False,
         captcha_solver: Optional[AbstractCaptchaSolver] = None,
     ):
         self._username = username
         self._password = password
+
+        self._headless = headless
 
         self._pause_between_navigation = pause_between_navigation
 
@@ -102,6 +105,8 @@ class BaseAmazonConnector(ABC):
         from webdriver_manager.firefox import GeckoDriverManager
 
         options = Options()
+        if self._headless:
+            options.add_argument("-headless")
         profile = FirefoxProfile(profile_directory=self._firefox_profile_directory)
         options.profile = profile
 
@@ -116,6 +121,8 @@ class BaseAmazonConnector(ABC):
         from webdriver_manager.chrome import ChromeDriverManager
 
         options = Options()
+        if self._headless:
+            options.add_argument("--headless=new")
         service = Service(ChromeDriverManager().install())
         driver = webdriver.Chrome(service=service, options=options)
 
