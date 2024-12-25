@@ -18,7 +18,7 @@ class State(ABC):
                 return self._handle(state_machine=state_machine, amazon=amazon)
             except CaptchaException as e:
                 logger.warning(
-                    f"Detected Captcha in state {self.__class__.__name__}: {e}"
+                    f"Detected captcha in state {self.__class__.__name__}: {e}"
                 )
                 state_machine.send("redirect_to_captcha", amazon=amazon)
             except OTPException as e:
