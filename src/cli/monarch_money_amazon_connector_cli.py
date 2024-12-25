@@ -4,6 +4,7 @@ from ..amazon_connector.amazon_order_connector import AmazonOrderConnector
 from ..monarch_connector.monarch import MonarchConnector
 from monarchmoney import MonarchMoney
 from ..captcha_solver.llm_captcha_solver import LLMCaptchaSolver
+from ..fsm.state_machine_implementation import OrderScraperFSM
 
 
 class MonarchMoneyAmazonConnectorCLI:
@@ -11,6 +12,9 @@ class MonarchMoneyAmazonConnectorCLI:
         self._config = config
 
         self._captcha_solver = None
+
+        self._fsm = OrderScraperFSM()
+
         if self._config.llm.enable_llm_captcha_solver:
             self._captcha_solver = LLMCaptchaSolver(
                 openai_api_key=self._config.llm.api_key,
@@ -50,7 +54,16 @@ class MonarchMoneyAmazonConnectorCLI:
         )
 
         logger.info("Retrieving Amazon orders.")
-        orders = connector.get_all_orders()
+
+        self._fsm.send("stay_on_login", amazon=connector)
+
+        if self._fsm.orders is None:
+            logger.error(
+                f"Failed to retrieve orders for Amazon account: {account.email}"
+            )
+            return
+
+        orders = self._fsm.orders
 
         logger.debug(
             f"Found {len(orders.orders)} orders for Amazon account: {account.email}"

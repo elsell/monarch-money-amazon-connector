@@ -32,14 +32,14 @@ class MonarchConnector:
     async def get_transactions_need_review(self) -> list[Transaction]:
         """Gets the transactions that need review, filtering out those that have the MMAC tag."""
 
-        mmac_tag = await self._get_mmac_tag_id()
+        mmac_tag_id = await self._get_mmac_tag_id()
 
         transactions = await self.get_transactions()
         transactions_needing_review = [
             t
             for t in transactions.allTransactions.results
             if t.reviewStatus == "needs_review"
-            and (mmac_tag not in [tag.name for tag in t.tags])
+            and (mmac_tag_id not in [tag.id for tag in t.tags])
         ]
         return transactions_needing_review
 
@@ -97,6 +97,8 @@ class MonarchConnector:
                 logger.warning(
                     f"Transaction {transaction_id} has multiple matches: {mapping.amazon_orders}"
                 )
+
+        logger.info(f"Found {len(matches)} transactions to annotate.")
 
         return list(matches.values())
 

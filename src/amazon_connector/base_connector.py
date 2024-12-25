@@ -9,6 +9,8 @@ from selenium.common.exceptions import NoSuchElementException
 from pathlib import Path
 from loguru import logger
 
+from ..monarch_connector.exceptions import CaptchaException
+
 from ..captcha_solver.abstract_captcha_solver import AbstractCaptchaSolver
 
 
@@ -19,7 +21,6 @@ class BaseAmazonConnector(ABC):
         self,
         username: str,
         password: str,
-        auto_login: bool = True,
         browser: Literal["firefox"] | Literal["chrome"] = "chrome",
         pause_between_navigation: bool = False,
         captcha_solver: Optional[AbstractCaptchaSolver] = None,
@@ -38,12 +39,6 @@ class BaseAmazonConnector(ABC):
         self.driver = self._initialize_driver()
 
         self.load_cookies()
-
-        if auto_login:
-            logger.info(f"Beginning auto-login for user {username}.")
-            self.login(email=username, password=password)
-        else:
-            input("Please sign in, then press Enter to continue...")
 
     def __del__(self):
         self.driver.quit()
@@ -136,12 +131,12 @@ class BaseAmazonConnector(ABC):
 
         return driver
 
-    def _handle_captcha(self):
-        def captcha_in_page_source():
-            return "captcha" in self.driver.page_source.lower()
+    def on_page_captcha(self):
+        return "captcha" in self.driver.page_source.lower()
 
+    def handle_captcha(self):
         try:
-            while captcha_in_page_source():
+            while self.on_page_captcha():
                 page_source = self.driver.page_source
 
                 # Check if "captcha" appears in the page source. This appears
@@ -178,7 +173,7 @@ class BaseAmazonConnector(ABC):
             logger.trace("No captcha/submit found.")
             pass
 
-    def _needs_to_login(self):
+    def on_page_login(self):
         return "signin" in self.driver.current_url
 
     def _navigate_safe(self, url: str, calling_from_login: bool = False):
@@ -188,16 +183,10 @@ class BaseAmazonConnector(ABC):
         if self._pause_between_navigation:
             input("Pausing before navigation. Press Enter to continue...")
 
-        while self._needs_to_login() and not calling_from_login:
-            logger.debug("Detected need to login. Attempting to login.")
-            self._handle_captcha()
-            self.login(email=self._username, password=self._password)
-
-        self._handle_captcha()
         self.driver.get(url)
 
-        # Check for captcha
-        self._handle_captcha()
+        if self.on_page_captcha():
+            raise CaptchaException("Captcha detected. Cannot navigate.")
 
         if url not in self.driver.current_url:
             logger.warning(
@@ -219,38 +208,28 @@ class BaseAmazonConnector(ABC):
             # Remove the cookies file
             self._cookies_file.unlink()
 
-    def _handle_otp(self):
-        code_correct = False
+    def on_page_otp(self):
+        return "auth-mfa-otpcode" in self.driver.page_source
 
-        while not code_correct:
-            try:
-                otp_input = self.driver.find_element(By.ID, "auth-mfa-otpcode")
-                otp_continue_button = self.driver.find_element(
-                    By.ID, "auth-signin-button"
-                )
-                remember_device_button = self.driver.find_element(
-                    By.ID, "auth-mfa-remember-device"
-                )
-            except NoSuchElementException:
-                return
-
-            logger.info("OTP Code required.")
-
-            otp_code = input("Please enter a OTP Code: ")
-
-            otp_input.send_keys(otp_code)
-            remember_device_button.click()
-            time.sleep(1)
-            otp_continue_button.click()
-
-            auth_error_message_box = self.driver.find_element(
-                By.ID, "auth-error-message-box"
+    def handle_otp(self):
+        try:
+            otp_input = self.driver.find_element(By.ID, "auth-mfa-otpcode")
+            otp_continue_button = self.driver.find_element(By.ID, "auth-signin-button")
+            remember_device_button = self.driver.find_element(
+                By.ID, "auth-mfa-remember-device"
             )
-            if auth_error_message_box:
-                logger.error("OTP Code was incorrect. Please try again.")
-            else:
-                logger.info("OTP Code was correct.")
-                code_correct = True
+        except NoSuchElementException:
+            return
+
+        logger.info("OTP Code required.")
+
+        otp_code = input("Please enter a OTP Code: ")
+
+        otp_input.send_keys(otp_code)
+        remember_device_button.click()
+        time.sleep(1)
+        otp_continue_button.click()
+        time.sleep(3)  # Wait for the page to load
 
     def _get_logged_in_user_email(self):
         return self._username
@@ -263,7 +242,7 @@ class BaseAmazonConnector(ABC):
         except NoSuchElementException:
             logger.trace(f"Could not find signout button with ID: {signout_button_id}")
 
-    def login(self, email: str, password: str):
+    def _login(self, email: str, password: str):
         self.logout()
 
         self._navigate_safe(self._url_signin, calling_from_login=True)
@@ -275,12 +254,13 @@ class BaseAmazonConnector(ABC):
 
             continue_button = self.driver.find_element(By.ID, "continue")
             continue_button.click()
-            time.sleep(6)  # Wait for the page to load
+            time.sleep(3)  # Wait for the page to load
         except NoSuchElementException:
             logger.warning("Failed to find email input field. Trying to login anyway.")
             pass
 
-        self._handle_captcha()
+        if self.on_page_captcha():
+            raise CaptchaException("Captcha detected. Cannot navigate.")
 
         try:
             password_input = self.driver.find_element(By.ID, "ap_password")
@@ -300,9 +280,5 @@ class BaseAmazonConnector(ABC):
             )
             pass
 
-        # Check for TOTP page
-        try:
-            self._handle_otp()
-
-        except NoSuchElementException:
-            pass
+    def login(self):
+        self._login(email=self._username, password=self._password)
