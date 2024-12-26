@@ -88,7 +88,7 @@ mmac
 ## A Note About SemVer
 
 MMAC is committed to using [Semantic Versioning](https://semver.org/) for its codebase.
-This means we are going to reach v1.0.0 very quickly, as strictly adhering to SemVer requires
+This means we are going to increment major versions relatively quickly, as strictly adhering to SemVer requires
 a major version increment for every breaking change.
 
 There is a lot of discussion about whether, for this reason, SemVer is "bad". In my opinion,
@@ -103,7 +103,7 @@ v1.0.0 to v2.0.0 without any notable changes.
 
 So, what's the solution?
 
-I don't know. Maintaining two versions is messy and complication, a hybrid concatenation
+I don't know. Maintaining two versions is messy and complicated, a hybrid concatenation
 of SemVer and AppVer is also messy and potentially confusing to the user, and choosing one or
 the other is an imperfect solution. Please - let me know if you've figured this out!
 
