@@ -9,9 +9,10 @@
 name: "Upload Python Package"
 run-name: "Upload Python Package (Release: ${{ github.event.release.name }})"
 
-on:
-  release:
-    types: [published]
+# on:
+#   release:
+#     types: [published]
+on: [release]
 
 permissions:
   contents: write
