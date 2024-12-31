@@ -30,9 +30,13 @@ class MonarchConnector:
         return TransactionResponse.model_validate(transactions)
 
     async def get_transactions_need_review(self) -> list[Transaction]:
-        """Gets the transactions that need review, filtering out those that have the MMAC tag."""
+        """Gets the transactions that need review, filtering out those that have the MMAC tag and don't ."""
 
         mmac_tag_id = await self._get_mmac_tag_id()
+
+        logger.trace("MMAC Tag ID set to '{}'", mmac_tag_id)
+
+        transaction_filters = self._config.transaction_filters
 
         transactions = await self.get_transactions()
         transactions_needing_review = [
@@ -41,7 +45,46 @@ class MonarchConnector:
             if t.reviewStatus == "needs_review"
             and (mmac_tag_id not in [tag.id for tag in t.tags])
         ]
-        return transactions_needing_review
+
+        logger.trace(
+            "Found {} transaction(s) that need review and don't have mmac tag: {}",
+            len(transactions_needing_review),
+            transactions_needing_review,
+        )
+
+        filtered_transactions: list[Transaction] = []
+
+        if len(transaction_filters) == 0:
+            filtered_transactions = transactions_needing_review
+        else:
+            for transaction in transactions_needing_review:
+                logger.trace("Checking transaction: {}", transaction)
+                for filter in transaction_filters:
+                    merchant_name = transaction.merchant.name
+
+                    if filter.ignore_case:
+                        merchant_name = merchant_name.lower()
+                        filter.merchant_name = filter.merchant_name.lower()
+
+                    logger.trace(
+                        "Comparing '{}' to '{}'...", merchant_name, filter.merchant_name
+                    )
+
+                    passes_filter = False
+
+                    if filter.search_by_contains:
+                        passes_filter = filter.merchant_name in merchant_name
+                    else:
+                        passes_filter = filter.merchant_name == merchant_name
+
+                    if passes_filter:
+                        logger.trace("Transaction {} passes filter.", transaction)
+                        filtered_transactions.append(transaction)
+                        break
+                    else:
+                        logger.trace("Transaction {} fails filter.", transaction)
+
+        return filtered_transactions
 
     async def match_transactions_to_amazon(
         self, amazon_orders: AmazonOrderData
