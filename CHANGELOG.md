@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/elsell/monarch-money-amazon-connector/compare/v2.0.0...v2.0.1) (2024-12-31)
+
+
+### Bug Fixes
+
+* **ci:** Fix pytest command. ([ce1afd5](https://github.com/elsell/monarch-money-amazon-connector/commit/ce1afd5f595142fc5203500e2cf3998b583425cc))
+
 ## [2.0.0](https://github.com/elsell/monarch-money-amazon-connector/compare/v1.3.0...v2.0.0) (2024-12-31)
 
 
@@ -22,11 +29,4 @@
 ### Bug Fixes
 
 * Typo ([98791c9](https://github.com/elsell/monarch-money-amazon-connector/commit/98791c927e410a5e9de8ed75a11442beb86287d5))
-
-## [1.2.2](https://github.com/elsell/monarch-money-amazon-connector/compare/v1.2.1...v1.2.2) (2024-12-25)
-
-
-### Bug Fixes
-
-* Typo ([d19ed02](https://github.com/elsell/monarch-money-amazon-connector/commit/d19ed02f2c42eae3f96e546c8436e08c1d8654e2))
 
