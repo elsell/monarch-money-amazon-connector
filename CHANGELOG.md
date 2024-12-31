@@ -1,3 +1,10 @@
+## [2.0.4](https://github.com/elsell/monarch-money-amazon-connector/compare/v2.0.3...v2.0.4) (2024-12-31)
+
+
+### Bug Fixes
+
+* **ci:** Sanity check release trigger. ([9c7ad4f](https://github.com/elsell/monarch-money-amazon-connector/commit/9c7ad4fab8d4539e4ee8165a02b94917dd3aa463))
+
 ## [2.0.3](https://github.com/elsell/monarch-money-amazon-connector/compare/v2.0.2...v2.0.3) (2024-12-31)
 
 
@@ -29,11 +36,4 @@
 ### Features
 
 * Filter Monarch Transactions by Merchant Name ([#4](https://github.com/elsell/monarch-money-amazon-connector/issues/4)) ([3d11799](https://github.com/elsell/monarch-money-amazon-connector/commit/3d11799e4b22e6a13a68aa12cb8f437780c22288))
-
-## [1.3.0](https://github.com/elsell/monarch-money-amazon-connector/compare/v1.2.3...v1.3.0) (2024-12-25)
-
-
-### Features
-
-* Create python-publish.yml ([50c4c50](https://github.com/elsell/monarch-money-amazon-connector/commit/50c4c5050c6f92f95d29b6e0f2bd341cdefb335b))
 
