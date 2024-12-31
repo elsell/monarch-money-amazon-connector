@@ -6,14 +6,15 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Upload Python Package
+name: "Upload Python Package"
+run-name: "Upload Python Package (Release: ${{ github.event.release.name }})"
 
 on:
   release:
-    types: [released]
+    types: [published]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   release-build:
@@ -66,7 +67,7 @@ jobs:
           password: ${{ secrets.PYPI_API_TOKEN }}
 
 
-  github-release:
+  sign-github-release:
     name: >-
       Sign the Python 🐍 distribution 📦 with Sigstore
       and upload them to GitHub Release
