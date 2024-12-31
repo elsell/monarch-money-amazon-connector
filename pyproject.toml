@@ -37,7 +37,8 @@ dependencies = [
 
 [project.optional-dependencies]
 build = ["twine"]
-dev = ["pre-commit", "ruff"]
+test = ["pytest", "pytest-asyncio"]
+dev = ["pre-commit", "ruff", "pytest", "pytest-asyncio", "pytest-sugar"]
 
 
 [project.urls]

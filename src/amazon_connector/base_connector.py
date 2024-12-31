@@ -82,7 +82,8 @@ class BaseAmazonConnector(ABC):
                 )
             else:
                 logger.warning(
-                    "No captcha solver provided. Please solve the captcha manually."
+                    "No captcha solver provided. Please solve the captcha manually. Image: {}",
+                    image_url,
                 )
             solved_captcha = input("Please enter the solved captcha: ")
             return solved_captcha

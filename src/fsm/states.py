@@ -27,7 +27,6 @@ class State(ABC):
 
         except Exception as e:
             logger.error(f"Error in state {self.__class__.__name__}: {e}")
-            state_machine.error_occurred()
 
     @abstractmethod
     def _handle(
