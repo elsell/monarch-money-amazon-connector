@@ -16,8 +16,8 @@ jobs:
         with:
           python-version: '3.12'
           cache: 'pip'
-      - run: pip install ".[dev]"
-      - run: pip test
+      - run: pip install ".[test]"
+      - run: pytest
 
 
   changelog:
