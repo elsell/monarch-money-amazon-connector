@@ -1,3 +1,10 @@
+## [2.0.2](https://github.com/elsell/monarch-money-amazon-connector/compare/v2.0.1...v2.0.2) (2024-12-31)
+
+
+### Bug Fixes
+
+* **ci:** Attempt to run pypi publish on release `released`. ([189a272](https://github.com/elsell/monarch-money-amazon-connector/commit/189a27246848013dc0ae7c1646196aeb48fd2239))
+
 ## [2.0.1](https://github.com/elsell/monarch-money-amazon-connector/compare/v2.0.0...v2.0.1) (2024-12-31)
 
 
@@ -22,11 +29,4 @@
 ### Features
 
 * Create python-publish.yml ([50c4c50](https://github.com/elsell/monarch-money-amazon-connector/commit/50c4c5050c6f92f95d29b6e0f2bd341cdefb335b))
-
-## [1.2.3](https://github.com/elsell/monarch-money-amazon-connector/compare/v0.0.0...v1.2.3) (2024-12-25)
-
-
-### Bug Fixes
-
-* Typo ([98791c9](https://github.com/elsell/monarch-money-amazon-connector/commit/98791c927e410a5e9de8ed75a11442beb86287d5))
 
