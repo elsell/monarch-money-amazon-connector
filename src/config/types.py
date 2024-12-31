@@ -32,6 +32,13 @@ class Debug(BaseModel):
     pause_between_navigation: bool = False
 
 
+class TransactionFilters(BaseModel):
+    merchant_name: str
+    ignore_case: bool = True
+    # Only care if the merchant name _contains_ the name.
+    search_by_contains: bool = False
+
+
 class LLM(BaseModel):
     enable_llm_captcha_solver: bool = False
     api_key: str = ""
@@ -45,6 +52,7 @@ class Config(BaseSettings):
     monarch_account: MonarchAccount
     amazon_accounts: list[AmazonAccount]
     transaction_tag: TransactionTag = TransactionTag()
+    transaction_filters: list[TransactionFilters] = []
     amazon_account_tag: AmazonAccountTag = AmazonAccountTag()
     debug: Debug = Debug()
     llm: LLM = LLM()
