@@ -1,3 +1,14 @@
+## [2.0.0](https://github.com/elsell/monarch-money-amazon-connector/compare/v1.3.0...v2.0.0) (2024-12-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* Filter Monarch Transactions by Merchant Name (#4)
+
+### Features
+
+* Filter Monarch Transactions by Merchant Name ([#4](https://github.com/elsell/monarch-money-amazon-connector/issues/4)) ([3d11799](https://github.com/elsell/monarch-money-amazon-connector/commit/3d11799e4b22e6a13a68aa12cb8f437780c22288))
+
 ## [1.3.0](https://github.com/elsell/monarch-money-amazon-connector/compare/v1.2.3...v1.3.0) (2024-12-25)
 
 
@@ -18,11 +29,4 @@
 ### Bug Fixes
 
 * Typo ([d19ed02](https://github.com/elsell/monarch-money-amazon-connector/commit/d19ed02f2c42eae3f96e546c8436e08c1d8654e2))
-
-## [1.2.1](https://github.com/elsell/monarch-money-amazon-connector/compare/v1.2.0...v1.2.1) (2024-12-25)
-
-
-### Bug Fixes
-
-* Run workflow on tags too. ([6c0a586](https://github.com/elsell/monarch-money-amazon-connector/commit/6c0a586932f683e83e4ce76c1db385b4d4c13973))
 
