@@ -1,3 +1,6 @@
+![PyPI - Downloads](https://img.shields.io/pypi/dm/monarch-money-amazon-connector)
+
+
 # Monarch Money Amazon Connector (MMAC)
 
 Monarch Money Amazon Connector automatically adds
