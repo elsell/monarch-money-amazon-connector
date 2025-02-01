@@ -18,6 +18,8 @@ class StateName(Enum):
 
 
 class OrderScraperFSM(StateMachine):
+    _orders: Optional[AmazonOrderData] = None
+
     # Define states
     login_page = State(StateName.LOGIN_PAGE.value, initial=True)
     captcha_page = State(StateName.CAPTCHA_PAGE.value)
@@ -79,6 +81,10 @@ class OrderScraperFSM(StateMachine):
     )
 
     all_orders_scraped_success = orders_page.to(all_orders_scraped)
+
+    def reset(self):
+        self._orders = None
+        self.current_state = self.login_page
 
     def on_exit_state(self, event, state):
         logger.debug(f"Exiting '{state.id}' state from '{event}' event.")

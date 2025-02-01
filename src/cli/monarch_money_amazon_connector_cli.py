@@ -56,6 +56,9 @@ class MonarchMoneyAmazonConnectorCLI:
 
         logger.info("Retrieving Amazon orders.")
 
+        if self._fsm.current_state.id == self._fsm.all_orders_scraped.id:
+            self._fsm.reset()
+
         self._fsm.send("stay_on_login", amazon=connector)
 
         if self._fsm.orders is None:
