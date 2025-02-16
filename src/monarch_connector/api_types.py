@@ -42,7 +42,7 @@ class Transaction(BaseModel):
     pending: bool
     date: str
     hideFromReports: bool
-    plaidName: str
+    plaidName: Optional[str]
     notes: Optional[str] = None
     isRecurring: bool
     reviewStatus: Optional[Literal["needs_review"] | Literal["reviewed"]] = None
