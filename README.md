@@ -74,7 +74,7 @@ password = "password"
 # This can be especially useful around the New Year if you want to annotate
 # transactions from the past year.
 [amazon_filter]
-year = "2024"
+year = "2025"
 
 # (Optional): Use the OpenAI API to *attempt* to
 # auto solve captcha images. This is NOT very reliable,
