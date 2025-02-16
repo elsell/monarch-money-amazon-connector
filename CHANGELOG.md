@@ -1,3 +1,15 @@
+## [2.1.0](https://github.com/elsell/monarch-money-amazon-connector/compare/v2.0.5...v2.1.0) (2025-02-16)
+
+
+### Features
+
+* Add year filter for Amazon transactions. ([11302bc](https://github.com/elsell/monarch-money-amazon-connector/commit/11302bc52f8524bd31a3cd2051d202947dcf279d))
+
+
+### Bug Fixes
+
+* Make Transaction.plaidName optional. ([27ede23](https://github.com/elsell/monarch-money-amazon-connector/commit/27ede232ab8c69e44930dc26ad23b740660f5826))
+
 ## [2.0.5](https://github.com/elsell/monarch-money-amazon-connector/compare/v2.0.4...v2.0.5) (2025-02-01)
 
 
@@ -25,11 +37,4 @@
 ### Bug Fixes
 
 * **ci:** Attempt to run pypi publish on release `released`. ([189a272](https://github.com/elsell/monarch-money-amazon-connector/commit/189a27246848013dc0ae7c1646196aeb48fd2239))
-
-## [2.0.1](https://github.com/elsell/monarch-money-amazon-connector/compare/v2.0.0...v2.0.1) (2024-12-31)
-
-
-### Bug Fixes
-
-* **ci:** Fix pytest command. ([ce1afd5](https://github.com/elsell/monarch-money-amazon-connector/commit/ce1afd5f595142fc5203500e2cf3998b583425cc))
 
