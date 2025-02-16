@@ -52,6 +52,7 @@ class MonarchMoneyAmazonConnectorCLI:
             headless=self._config.headless,
             pause_between_navigation=self._config.debug.pause_between_navigation,
             captcha_solver=self._captcha_solver,
+            searchFilter=self._config.amazon_filter,
         )
 
         logger.info("Retrieving Amazon orders.")

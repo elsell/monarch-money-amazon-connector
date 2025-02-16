@@ -10,7 +10,7 @@ from pathlib import Path
 from loguru import logger
 
 from ..monarch_connector.exceptions import CaptchaException
-
+from ..config.types import AmazonFilter
 from ..captcha_solver.abstract_captcha_solver import AbstractCaptchaSolver
 
 
@@ -25,6 +25,7 @@ class BaseAmazonConnector(ABC):
         headless: bool = True,
         pause_between_navigation: bool = False,
         captcha_solver: Optional[AbstractCaptchaSolver] = None,
+        searchFilter: AmazonFilter = AmazonFilter(),
     ):
         self._username = username
         self._password = password
@@ -36,6 +37,8 @@ class BaseAmazonConnector(ABC):
         self._captcha_solver = captcha_solver
 
         self._browser_choice = browser
+
+        self._searchFilter = searchFilter
 
         self._init_config_dir()
 

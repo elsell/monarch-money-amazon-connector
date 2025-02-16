@@ -7,6 +7,10 @@ from pydantic_settings import (
 from typing import Optional, Type
 
 
+class AmazonFilter(BaseModel):
+    year: Optional[str] = None
+
+
 class AmazonAccount(BaseModel):
     email: str
     password: str
@@ -53,6 +57,7 @@ class Config(BaseSettings):
     amazon_accounts: list[AmazonAccount]
     transaction_tag: TransactionTag = TransactionTag()
     transaction_filters: list[TransactionFilters] = []
+    amazon_filter: AmazonFilter = AmazonFilter()
     amazon_account_tag: AmazonAccountTag = AmazonAccountTag()
     debug: Debug = Debug()
     llm: LLM = LLM()

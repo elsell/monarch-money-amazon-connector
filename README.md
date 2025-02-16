@@ -66,6 +66,16 @@ password = "password"
 # email = "test2@example.com"
 # password = "password"
 
+# (Optional): Use all transactions from a given year.
+# By default, only the Amazon transactions from the last 3 months
+# will be considered for matching to Monarch transactions.
+#
+# You can use this filter to pull all transactions from the specified year.
+# This can be especially useful around the New Year if you want to annotate
+# transactions from the past year.
+[amazon_filter]
+year = "2024"
+
 # (Optional): Use the OpenAI API to *attempt* to
 # auto solve captcha images. This is NOT very reliable,
 # but may work with simpler captchas.

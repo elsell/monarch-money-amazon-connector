@@ -36,6 +36,12 @@ class AmazonOrderConnector(BaseAmazonConnector):
         while count_orders_on_page is None or count_orders_on_page > 0:
             page_url = self._url_orders + f"?&startIndex={page * self._ORDERS_PER_PAGE}"
 
+            if self._searchFilter.year:
+                logger.debug(
+                    f"Filtering Amazon transactions to year: {self._searchFilter.year}"
+                )
+                page_url = f"{page_url}&timeFilter=year-{self._searchFilter.year}"
+
             orders_on_page = self._scrape_order_info(url=page_url)
 
             count_orders_on_page = len(orders_on_page.orders)
