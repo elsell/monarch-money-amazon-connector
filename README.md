@@ -88,7 +88,7 @@ api_key = "sk-********"
 # project = "proj_**********"
 
 # (Optional): Specify whether to show the browser
-# window while scraping, or now (headless).
+# window while scraping, or not (headless).
 # headless = true
 ```
 

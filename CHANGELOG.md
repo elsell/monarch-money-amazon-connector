@@ -1,3 +1,10 @@
+## [2.0.5](https://github.com/elsell/monarch-money-amazon-connector/compare/v2.0.4...v2.0.5) (2025-02-01)
+
+
+### Bug Fixes
+
+* Fix crash when annotating multiple Amazon accounts. ([ece84dd](https://github.com/elsell/monarch-money-amazon-connector/commit/ece84dd12b458296e8c10c2d9a914e8e63e966e2))
+
 ## [2.0.4](https://github.com/elsell/monarch-money-amazon-connector/compare/v2.0.3...v2.0.4) (2024-12-31)
 
 
@@ -25,15 +32,4 @@
 ### Bug Fixes
 
 * **ci:** Fix pytest command. ([ce1afd5](https://github.com/elsell/monarch-money-amazon-connector/commit/ce1afd5f595142fc5203500e2cf3998b583425cc))
-
-## [2.0.0](https://github.com/elsell/monarch-money-amazon-connector/compare/v1.3.0...v2.0.0) (2024-12-31)
-
-
-### ⚠ BREAKING CHANGES
-
-* Filter Monarch Transactions by Merchant Name (#4)
-
-### Features
-
-* Filter Monarch Transactions by Merchant Name ([#4](https://github.com/elsell/monarch-money-amazon-connector/issues/4)) ([3d11799](https://github.com/elsell/monarch-money-amazon-connector/commit/3d11799e4b22e6a13a68aa12cb8f437780c22288))
 
