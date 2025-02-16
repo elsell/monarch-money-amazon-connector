@@ -30,6 +30,7 @@ dependencies = [
   "loguru",
   "openai",
   "toml",
+  "tenacity==9.0.0",
   "webdriver_manager",
   "pydantic_settings",
   "python-statemachine",

@@ -2,7 +2,7 @@ import time
 from monarchmoney import MonarchMoney
 
 from .exceptions import TagAlreadyExistsException
-
+from tenacity import retry, stop_after_attempt, wait_random_exponential
 from ..config.types import Config
 from .api_types import (
     CategoriesResponse,
@@ -26,8 +26,14 @@ class MonarchConnector:
         self._config = config
 
     async def get_transactions(self) -> TransactionResponse:
-        transactions = await self.mm.get_transactions(limit=1000)
-        return TransactionResponse.model_validate(transactions)
+        @retry(
+            stop=stop_after_attempt(15),
+            wait=wait_random_exponential(multiplier=1, max=60),
+        )
+        async def get_transactions_safe():
+            return await self.mm.get_transactions(limit=1500)
+
+        return TransactionResponse.model_validate(await get_transactions_safe())
 
     async def get_transactions_need_review(self) -> list[Transaction]:
         """Gets the transactions that need review, filtering out those that have the MMAC tag and don't ."""
