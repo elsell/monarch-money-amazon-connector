@@ -34,10 +34,25 @@ class MonarchMoneyAmazonConnectorCLI:
             logger.debug(
                 f"Logging in with email: {self._config.monarch_account.email}, password: '{self._config.monarch_account.password}'"
             )
-            await self._mm.login(
-                email=self._config.monarch_account.email,
-                password=self._config.monarch_account.password,
-            )
+            try:
+                await self._mm.login(
+                    email=self._config.monarch_account.email,
+                    password=self._config.monarch_account.password,
+                    save_session=True,
+                    use_saved_session=True
+                )
+            except Exception as e:
+                if e.__class__.__name__ == "RequireMFAException":
+                    code = input("Enter Monarch MFA code: ")
+                    await self._mm.multi_factor_authenticate(
+                        email=self._config.monarch_account.email,
+                        password=self._config.monarch_account.password,
+                        save_session=True,
+                        use_saved_session=True,
+                        code=code,
+                    )
+                else:
+                    raise
 
         return self._mm
 
