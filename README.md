@@ -138,3 +138,5 @@ You're smart, I'm lazy. Let's just use SemVer.
 
 This project wouldn't be possible without the community [`Monarch Money Library`](https://github.com/hammem/monarchmoney)!
 Head over there and give that project some love!
+
+Further thanks to [`abrahamw88`](https://github.com/abrahamw88) for their contributions to MMAC!
