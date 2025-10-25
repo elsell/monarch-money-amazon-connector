@@ -101,7 +101,15 @@ jobs:
         # Upload to GitHub Release using the `gh` CLI.
         # `dist/` contains the built packages, and the
         # sigstore-produced signatures and certificates.
-        run: >-
-          gh release upload
-          "${{ github.event.release.name }}" dist/**
-            --repo "$GITHUB_REPOSITORY"
+        run: |
+          set -euo pipefail
+          # Find the most-recent release in the repo. Prefer tag name if present.
+          TAG=$(gh release list --limit 1 --repo "$GITHUB_REPOSITORY" --json tagName --jq '.[0].tagName')
+          NAME=$(gh release list --limit 1 --repo "$GITHUB_REPOSITORY" --json name --jq '.[0].name')
+          if [ -n "$TAG" ] && [ "$TAG" != "null" ]; then
+            TARGET="$TAG"
+          else
+            TARGET="$NAME"
+          fi
+          echo "Uploading artifacts to release: $TARGET"
+          gh release upload "$TARGET" dist/** --repo "$GITHUB_REPOSITORY"
