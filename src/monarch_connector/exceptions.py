@@ -8,3 +8,7 @@ class CaptchaException(Exception):
 
 class OTPException(Exception):
     pass
+
+
+class InvalidMonarchSessionException(Exception):
+    pass
