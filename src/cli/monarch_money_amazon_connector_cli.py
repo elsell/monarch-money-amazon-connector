@@ -2,9 +2,9 @@ from ..config.types import AmazonAccount, Config
 from loguru import logger
 from ..amazon_connector.amazon_order_connector import AmazonOrderConnector
 from ..monarch_connector.monarch import MonarchConnector
-from monarchmoney import MonarchMoney
 from ..captcha_solver.llm_captcha_solver import LLMCaptchaSolver
 from ..fsm.state_machine_implementation import OrderScraperFSM
+from monarchmoney import MonarchMoney, RequireMFAException
 
 
 class MonarchMoneyAmazonConnectorCLI:
@@ -39,20 +39,16 @@ class MonarchMoneyAmazonConnectorCLI:
                     email=self._config.monarch_account.email,
                     password=self._config.monarch_account.password,
                     save_session=True,
-                    use_saved_session=True
+                    mfa_secret_key=self._config.monarch_account.mfa_secret_key,
                 )
-            except Exception as e:
-                if e.__class__.__name__ == "RequireMFAException":
-                    code = input("Enter Monarch MFA code: ")
-                    await self._mm.multi_factor_authenticate(
-                        email=self._config.monarch_account.email,
-                        password=self._config.monarch_account.password,
-                        save_session=True,
-                        use_saved_session=True,
-                        code=code,
-                    )
-                else:
-                    raise
+            except RequireMFAException:
+                logger.info("Multi-factor code required.")
+                code = input("Enter Monarch MFA Code:")
+                await self._mm.multi_factor_authenticate(
+                    email=self._config.monarch_account.email,
+                    password=self._config.monarch_account.password,
+                    code=code,
+                )
 
         return self._mm
 
