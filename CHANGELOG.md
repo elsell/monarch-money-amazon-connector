@@ -1,3 +1,10 @@
+## [2.3.2](https://github.com/elsell/monarch-money-amazon-connector/compare/v2.3.1...v2.3.2) (2025-10-25)
+
+
+### Bug Fixes
+
+* Fix publish action trigger ([2c21148](https://github.com/elsell/monarch-money-amazon-connector/commit/2c21148a07a296643534cea6e6d24eb4007d73ba))
+
 ## [2.3.1](https://github.com/elsell/monarch-money-amazon-connector/compare/v2.3.0...v2.3.1) (2025-10-25)
 
 
@@ -30,11 +37,4 @@
 ### Bug Fixes
 
 * Make Transaction.plaidName optional. ([27ede23](https://github.com/elsell/monarch-money-amazon-connector/commit/27ede232ab8c69e44930dc26ad23b740660f5826))
-
-## [2.0.5](https://github.com/elsell/monarch-money-amazon-connector/compare/v2.0.4...v2.0.5) (2025-02-01)
-
-
-### Bug Fixes
-
-* Fix crash when annotating multiple Amazon accounts. ([ece84dd](https://github.com/elsell/monarch-money-amazon-connector/commit/ece84dd12b458296e8c10c2d9a914e8e63e966e2))
 
