@@ -1,3 +1,10 @@
+## [2.3.1](https://github.com/elsell/monarch-money-amazon-connector/compare/v2.3.0...v2.3.1) (2025-10-25)
+
+
+### Bug Fixes
+
+* Check for Invalid Saved Sessions at Startup ([#13](https://github.com/elsell/monarch-money-amazon-connector/issues/13)) ([ab1c6e3](https://github.com/elsell/monarch-money-amazon-connector/commit/ab1c6e35423db717aa60b71d7e6d1274ba9139e0))
+
 ## [2.3.0](https://github.com/elsell/monarch-money-amazon-connector/compare/v2.2.0...v2.3.0) (2025-10-25)
 
 
@@ -30,11 +37,4 @@
 ### Bug Fixes
 
 * Fix crash when annotating multiple Amazon accounts. ([ece84dd](https://github.com/elsell/monarch-money-amazon-connector/commit/ece84dd12b458296e8c10c2d9a914e8e63e966e2))
-
-## [2.0.4](https://github.com/elsell/monarch-money-amazon-connector/compare/v2.0.3...v2.0.4) (2024-12-31)
-
-
-### Bug Fixes
-
-* **ci:** Sanity check release trigger. ([9c7ad4f](https://github.com/elsell/monarch-money-amazon-connector/commit/9c7ad4fab8d4539e4ee8165a02b94917dd3aa463))
 
