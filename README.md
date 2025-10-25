@@ -52,7 +52,9 @@ will contain configuration values needed to run MMAC.
 # Replace with your Monarch account credentials.
 monarch_account.email = "example@example.com"
 monarch_account.password = "password"
-
+# (Optional) Automatically generate MFA codes using your MFA secret key (seed).
+# You can
+# monarch_account.mfa_secret_key = "XXXXXXXXXXXXXXXXXXXXXXXXXX"
 
 # Your amazon account credentials
 [[amazon_accounts]]
