@@ -39,6 +39,7 @@ class MonarchMoneyAmazonConnectorCLI:
                     email=self._config.monarch_account.email,
                     password=self._config.monarch_account.password,
                     save_session=True,
+                    use_saved_session=True,
                     mfa_secret_key=self._config.monarch_account.mfa_secret_key,
                 )
             except RequireMFAException:
