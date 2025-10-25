@@ -17,14 +17,20 @@ Under the hood, MMAC uses the [`monarchmoney`](https://github.com/hammem/monarch
 
 > [!Warning]
 >
-> **⚠️ MMAC IS IN ALPHA**
+> **⚠️ MMAC IS IN BETA**
 >
 > I'm making this repo public early to solicit feedback on the functionality,
 > and to provide opportunities for collaboration.
 >
 > No warranty is provided, and the documentation is incomplete at this point.
+
+
+> [!Note]
+> Monarch recently released their [browser extension](https://chromewebstore.google.com/detail/monarch-money-retail-purc/imfcckkmcklambpijbgcebggegggkgla) which provides very similar functionality to MMAC.
 >
-> **If you're just looking for something that works, check back in a few months :)**
+> I will continue to support this project for now, as I don't personally want to provide Monarch access to my browser via an extension. However, for most people, the extension is probably the way to go.
+>
+> For those who are technically-inclined, and may also want to auto-sync Amazon transactions without leaving a browser window open, MMAC is still the best available option.
 
 ## Screenshot
 
