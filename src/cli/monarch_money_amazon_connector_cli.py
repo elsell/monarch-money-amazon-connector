@@ -1,3 +1,4 @@
+from ..monarch_connector.exceptions import InvalidMonarchSessionException
 from ..config.types import AmazonAccount, Config
 from loguru import logger
 from ..amazon_connector.amazon_order_connector import AmazonOrderConnector
@@ -24,12 +25,32 @@ class MonarchMoneyAmazonConnectorCLI:
                 organization=self._config.llm.organization,
             )
 
+    async def _is_valid_session(self) -> bool:
+        try:
+            # Try a test request to ensure the session is valid
+            await self._mm.get_accounts()
+
+            logger.debug("Monarch Money session is valid.")
+            return True
+        except Exception:
+            logger.debug("Monarch Money session is invalid.")
+            return False
+
     async def _get_monarch_money(self) -> MonarchMoney:
         self._mm = MonarchMoney()
         try:
             self._mm.load_session()
+
+            # Try a test request to ensure the session is valid
+
+            if not await self._is_valid_session():
+                logger.warning(
+                    "Existing Monarch Money session is invalid. Attempting to re-authenticate."
+                )
+                raise InvalidMonarchSessionException("Invalid session")
+
             logger.info("Monarch Money session found. Using existing session.")
-        except FileNotFoundError:
+        except (FileNotFoundError, InvalidMonarchSessionException):
             logger.info("No Monarch Money session found. Logging in.")
             logger.debug(
                 f"Logging in with email: {self._config.monarch_account.email}, password: '{self._config.monarch_account.password}'"
@@ -39,7 +60,7 @@ class MonarchMoneyAmazonConnectorCLI:
                     email=self._config.monarch_account.email,
                     password=self._config.monarch_account.password,
                     save_session=True,
-                    use_saved_session=True,
+                    use_saved_session=False,
                     mfa_secret_key=self._config.monarch_account.mfa_secret_key,
                 )
             except RequireMFAException:
@@ -50,6 +71,12 @@ class MonarchMoneyAmazonConnectorCLI:
                     password=self._config.monarch_account.password,
                     code=code,
                 )
+
+        if not await self._is_valid_session():
+            logger.error("Failed to authenticate to Monarch Money.")
+            raise InvalidMonarchSessionException(
+                "Failed to authenticate to Monarch Money."
+            )
 
         return self._mm
 
