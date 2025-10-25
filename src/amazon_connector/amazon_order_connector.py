@@ -75,6 +75,12 @@ class AmazonOrderConnector(BaseAmazonConnector):
             for order_card in all_cards:
                 order_info: AmazonOrderItem = AmazonOrderItem()
 
+                if len(order_card.find_elements(By.CSS_SELECTOR, ".a-size-base")) < 2:
+                    # cancelled / unusual order card - skip it
+                    logger.debug(
+                        "Skipping order card with unexpected structure. It's possible this order was cancelled."
+                    )
+                    continue
                 order_date = order_card.find_elements(By.CSS_SELECTOR, ".a-size-base")[
                     0
                 ].text
