@@ -73,7 +73,6 @@ class AmazonOrderConnector(BaseAmazonConnector):
         try:
             all_cards = self.driver.find_elements(By.CSS_SELECTOR, ".order-card")
             for order_card in all_cards:
-
                 order_info: AmazonOrderItem = AmazonOrderItem()
                 if len(order_card.find_elements(By.CSS_SELECTOR, ".a-size-base")) < 2:
                     # cancelled / unusual order card — skip it
