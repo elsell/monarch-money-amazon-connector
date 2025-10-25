@@ -8,7 +8,7 @@ packages = ["src/"]
 
 [project]
 name = "monarch-money-amazon-connector"
-version = "2.2.0"
+version = "2.3.0"
 authors = [
   { name = "elsell", email = "35787503+elsell@users.noreply.github.com" },
 ]
