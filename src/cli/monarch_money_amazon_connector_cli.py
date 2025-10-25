@@ -47,8 +47,6 @@ class MonarchMoneyAmazonConnectorCLI:
                     await self._mm.multi_factor_authenticate(
                         email=self._config.monarch_account.email,
                         password=self._config.monarch_account.password,
-                        save_session=True,
-                        use_saved_session=True,
                         code=code,
                     )
                 else:
