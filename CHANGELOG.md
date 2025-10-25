@@ -1,3 +1,10 @@
+## [2.2.0](https://github.com/elsell/monarch-money-amazon-connector/compare/v2.1.0...v2.2.0) (2025-10-23)
+
+
+### Features
+
+* Implement MFA for Monarch Money login ([#7](https://github.com/elsell/monarch-money-amazon-connector/issues/7)) ([9befc0e](https://github.com/elsell/monarch-money-amazon-connector/commit/9befc0e88445cface608bb5a368eb41e06ed070f))
+
 ## [2.1.0](https://github.com/elsell/monarch-money-amazon-connector/compare/v2.0.5...v2.1.0) (2025-02-16)
 
 
@@ -30,11 +37,4 @@
 ### Bug Fixes
 
 * **ci:** Attempt to fix permissions for pypi publish action. ([a32cc24](https://github.com/elsell/monarch-money-amazon-connector/commit/a32cc24b3e0b0750ccae192a9d98113bdbbb4e96))
-
-## [2.0.2](https://github.com/elsell/monarch-money-amazon-connector/compare/v2.0.1...v2.0.2) (2024-12-31)
-
-
-### Bug Fixes
-
-* **ci:** Attempt to run pypi publish on release `released`. ([189a272](https://github.com/elsell/monarch-money-amazon-connector/commit/189a27246848013dc0ae7c1646196aeb48fd2239))
 
